@@ -5,7 +5,7 @@ class PPAWException(Exception):
     """ The base PPAW Exception that all other exception classes extend. """
 
 
-class ClientException(PPAWException):
+class ClientException(Exception):
     """ Indicates an exception that involving the client """
 
 
@@ -16,3 +16,7 @@ class CurrencyNotFound(ClientException):
 
     def __init__(self, key: str):
         super().__init__(f"The currency key {key} was not found.")
+
+
+class PoloniexAPIException(Exception):
+    """ Container for error messages from Poloniex's API """

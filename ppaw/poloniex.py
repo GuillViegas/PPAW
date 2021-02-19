@@ -1,8 +1,11 @@
 from requests import Session
+from requests.exceptions import HTTPError
 
 from .const import POLONIEX_PUBLIC_URL
 from .exceptions import (
-    CurrencyNotFound
+    CurrencyNotFound,
+    PoloniexAPIException,
+    PPAWException
 )
 
 
@@ -21,7 +24,7 @@ class Currencies(dict):
             for currency in self
         ]
 
-        return "\n".join(sorted(currencies))
+        return "\n".join(currencies)
 
 
 class PoloniexPublic:
@@ -38,27 +41,42 @@ class PoloniexPublic:
 
     """
 
-    __currencies = None
+    currencies = Currencies()
 
     def __init__(self):
         self._public_url = POLONIEX_PUBLIC_URL
         self.session = Session()
+        self._get_currencies()
 
-    def _public(self, command: str) -> dict:
-        """ """
+    def _public(self, command: str, **params) -> dict:
+        """ Invokes 'command' from Public HTTP Api.
+        
+        Available commands:
+            - returnTicker
+            - return24hVolume
+            - returnOrderBooks
+            - returnTradeHistory
+            - returnChartData
+            - returnCurrencies
+            - returnLoanOrders
 
-        return self.session.get(
-            self._public_url,
-            params={'command': command}
-        ).json()
-
-    @property
-    def currencies(self):
-        """ A property that returns an Currencies object (a dictionary) with
-            all available currencies.
         """
+        try:
+            response = self.session.get(
+                self._public_url,
+                params={'command': command}
+            )
+            response.raise_for_status()
+        except HTTPError as http_error:
+            raise PoloniexAPIException(http_error)
+        except Exception as error:
+            raise PPAWException(error)
 
-        if not self.__currencies:
-            self.__currencies = Currencies(self._public('returnCurrencies'))
+        return response.json()
 
-        return self.__currencies
+    def _get_currencies(self):
+        """ Gets and stores information about currencies only if 
+            it doesn't have this information. 
+        """
+        if not self.currencies:
+            self.currencies = Currencies(self._public('returnCurrencies'))
