@@ -18,5 +18,12 @@ class CurrencyNotFound(ClientException):
         super().__init__(f"The currency key {key} was not found.")
 
 
+class CurrencyPairNotFound(ClientException):
+    """  """
+
+    def __init__(self, key_pair: str):
+        super().__init__(f'The currency key pair {key_pair} was not found.')
+
+
 class PoloniexAPIException(Exception):
     """ Container for error messages from Poloniex's API """
