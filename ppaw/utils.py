@@ -1,13 +1,22 @@
-def calculate_candle():
+from collections import namedtuple
+from datetime import datetime
+
+candle_fields = ('currency_pair', 'duration', 'datetime', 'open', 'low', 'high', 'close')
+Candle = namedtuple('Candle', candle_fields, defaults=(None,) *len(candle_fields))
+
+
+def calculate_candle(currency_pair, duration):
     trades = []
 
     def _aggregation_function(response_msg):
-        if response_msg:
+        if response_msg and response_msg[0] != 1010:
             for record in response_msg[2]:
                 if record[0] == "t":
                         trades.append(record[3])
 
         if trades:
-            return trades[0], max(trades), min(trades), trades[-1]
+            return Candle(currency_pair, f'{duration} min', datetime.now(), trades[0], min(trades), max(trades), trades[-1])
+
+        return Candle()
 
     return _aggregation_function

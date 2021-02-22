@@ -2,7 +2,7 @@ from datetime import datetime
 import json
 from requests import Session
 from requests.exceptions import HTTPError
-from typing import Union
+from typing import Callable
 import websockets
 
 from .const import (
@@ -16,6 +16,8 @@ from .exceptions import (
     PoloniexAPIException,
     PPAWException
 )
+
+from .utils import Candle
 
 
 class CurrencyPairs(dict):
@@ -139,13 +141,18 @@ class PoloniexWebsocket:
     def __init__(self):
         self._websocket_url = POLONIEX_WEBSOCKET_URL
 
-    async def _subscribe(self, channel: Union[int, str], aggregation_function, period):
+    async def _subscribe(   self, 
+                            channel: str, 
+                            aggregation_function: Callable[[str], Candle], 
+                            period: int):
         async with websockets.connect(self._websocket_url) as websocket:
             msg = json.dumps({"command": "subscribe", "channel": channel})
 
             await websocket.send(msg)
 
-            agg_func = aggregation_function()
+            func_args = {'currency_pair': channel, 'duration':(period/60)}
+            agg_func = aggregation_function(**func_args)
+            
             start = datetime.now()
             while True:
                 response_msg = await websocket.recv()
@@ -153,10 +160,10 @@ class PoloniexWebsocket:
 
                 if (datetime.now() - start).total_seconds() >= period:
                     start = datetime.now()
-                    open_value, max_value, min_value, close_value = agg_func(None)
-                    print(open_value, max_value, min_value, close_value)
+                    candle = agg_func(None)
+                    print(candle.currency_pair, candle.duration, candle.open, candle.low, candle.high, candle.close)
                     del agg_func
-                    agg_func = aggregation_function()
+                    agg_func = aggregation_function(**func_args)
 
 
 class Poloniex(PoloniexWebsocket, PoloniexPublic):
