@@ -65,13 +65,13 @@ class PoloniexPublic:
 
     """
 
-    _currencies = Currencies()
-    _currency_pairs = CurrencyPairs()
-
     def __init__(self):
         self._public_url = POLONIEX_PUBLIC_URL
         self.session = Session()
         
+        self._currencies = Currencies()
+        self._currency_pairs = CurrencyPairs()
+
         self._store_currencies()
         self._store_currency_pairs()
 
@@ -166,5 +166,8 @@ class PoloniexWebsocket:
                     agg_func = aggregation_function(**func_args)
 
 
-class Poloniex(PoloniexWebsocket, PoloniexPublic):
-    pass
+class Poloniex(PoloniexPublic, PoloniexWebsocket):
+    
+    def __init__(self):
+        PoloniexPublic.__init__(self)
+        PoloniexWebsocket.__init__(self)
