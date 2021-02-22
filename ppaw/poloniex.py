@@ -1,5 +1,9 @@
+from datetime import datetime
+import json
 from requests import Session
 from requests.exceptions import HTTPError
+from typing import Union
+import websockets
 
 from .const import (
     POLONIEX_PUBLIC_URL,
@@ -134,6 +138,25 @@ class PoloniexWebsocket:
     
     def __init__(self):
         self._websocket_url = POLONIEX_WEBSOCKET_URL
+
+    async def _subscribe(self, channel: Union[int, str], aggregation_function, period):
+        async with websockets.connect(self._websocket_url) as websocket:
+            msg = json.dumps({"command": "subscribe", "channel": channel})
+
+            await websocket.send(msg)
+
+            agg_func = aggregation_function()
+            start = datetime.now()
+            while True:
+                response_msg = await websocket.recv()
+                agg_func(json.loads(response_msg))
+
+                if (datetime.now() - start).total_seconds() >= period:
+                    start = datetime.now()
+                    open_value, max_value, min_value, close_value = agg_func(None)
+                    print(open_value, max_value, min_value, close_value)
+                    del agg_func
+                    agg_func = aggregation_function()
 
 
 class Poloniex(PoloniexWebsocket, PoloniexPublic):
