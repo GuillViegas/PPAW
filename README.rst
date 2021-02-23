@@ -26,3 +26,17 @@ obtained via:
 
     from ppaw import Poloniex
     poloniex = Poloniex()
+
+With the ``poloniex``instance you can then interact with Poloniex:
+
+.. code-bloc:: python
+
+    # List currencies
+    >>>> poloniex.currencies
+    1 - 1CRedit (1CR)
+    446 - Aave (AAVE)
+    2 - ArtByte (ABY)
+    3 - AsiaCoin (AC)
+    4 - Altcoin Herald (ACH)
+    ...
+
