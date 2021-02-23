@@ -42,6 +42,6 @@ With the ``poloniex``instance you can then interact with Poloniex:
 
     # Return information about currency
     >>>> poloniex.currencies['BTC'] 
-    {'id': 28, 'name': 'Bitcoin', 'humanType': 'BTC Clone', 'currencyType': 'address', 'txFee': '0.00050000', 'minConf': 1, 
-    'depositAddress': None, 'disabled': 0, 'frozen': 0, 'hexColor': 'F59C3D', 'blockchain': 'BTC', 'delisted': 0, 'isGeofen
-    ced': 0}
+    {'id': 28, 'name': 'Bitcoin', 'humanType': 'BTC Clone', 'currencyType': 'address', 
+    'txFee': '0.00050000', 'minConf': 1, 'depositAddress': None, 'disabled': 0, 'froze
+    n': 0, 'hexColor': 'F59C3D', 'blockchain': 'BTC', 'delisted': 0, 'isGeofenced': 0}
