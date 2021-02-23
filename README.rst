@@ -15,3 +15,14 @@ command:
 .. code-block:: bash
 
     $ pip install ppaw/
+
+Quickstart
+----------
+
+Poloniex's instances provide a facade to access both the Public and Websocket APIs. An instance of this class can be
+obtained via:
+
+.. code-block:: Python
+
+    from ppaw import Poloniex
+    poloniex = Poloniex()
