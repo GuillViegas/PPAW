@@ -45,3 +45,12 @@ With the ``poloniex``instance you can then interact with Poloniex:
     {'id': 28, 'name': 'Bitcoin', 'humanType': 'BTC Clone', 'currencyType': 'address', 
     'txFee': '0.00050000', 'minConf': 1, 'depositAddress': None, 'disabled': 0, 'froze
     n': 0, 'hexColor': 'F59C3D', 'blockchain': 'BTC', 'delisted': 0, 'isGeofenced': 0}
+
+    # List currency pairs
+    >>>> poloniex.currency_pairs
+    14 - BTC_BTS
+    24 - BTC_DASH
+    27 - BTC_DOGE
+    50 - BTC_LTC
+    69 - BTC_NXT
+    ...
