@@ -52,6 +52,7 @@ class Currencies(dict):
 
 
 class PoloniexPublic:
+    """ Provide connection with Poloniex Public API. """
 
     def __init__(self):
         self._public_url = POLONIEX_PUBLIC_URL
@@ -116,15 +117,16 @@ class PoloniexPublic:
             })
 
     def return_currencies(self) -> Currencies:
-        """  """
+        """ Return information about currencies. """
         return self._public('returnCurrencies')
 
     def return_ticker(self):
-        """  """
+        """ Return summary information for each currency pair listed on the exchange. """
         return self._public('returnTicker')
         
 
 class PoloniexWebsocket:
+    """ Prvovide connection with Poloniex through an websocket protocol. """ 
     
     def __init__(self):
         self._websocket_url = POLONIEX_WEBSOCKET_URL
