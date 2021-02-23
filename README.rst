@@ -69,7 +69,7 @@ Subscribe Method
 This is an asynchronous method that establishes a connection with the poloniex websocket. 
 You need to provide a currency pair key, like 'USDC_BTC', an aggregation function, in this
 case a closure that calculates a candle(opening, minimum, maximun and closing value) for a
-period of time, the corresponding period, and a callback function that will consume the values.
+period of time, the corresponding period, in seconds, and a callback function that will consume the values.
 
 .. code-block:: python
 
