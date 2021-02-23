@@ -133,7 +133,7 @@ class PoloniexWebsocket:
                             channel: str, 
                             aggregation_function: Callable[[str], Candle], 
                             period: int,
-                            store_func: Callable):
+                            callback: Callable):
         async with websockets.connect(self._websocket_url) as websocket:
             msg = json.dumps({"command": "subscribe", "channel": channel})
 
@@ -151,8 +151,8 @@ class PoloniexWebsocket:
                     start = datetime.now()
                     candle = agg_func(None)
 
-                    if store_func and candle.currency_pair:
-                        await store_func(candle)
+                    if callback and candle.currency_pair:
+                        await callback(candle)
 
                     del agg_func
                     agg_func = aggregation_function(**func_args)
