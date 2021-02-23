@@ -27,7 +27,7 @@ obtained via:
     from ppaw import Poloniex
     poloniex = Poloniex()
 
-With the ``poloniex``instance you can then interact with Poloniex:
+With the ``poloniex`` instance you can then interact with Poloniex:
 
 .. code-block:: python
 
