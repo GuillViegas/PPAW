@@ -54,3 +54,8 @@ With the ``poloniex``instance you can then interact with Poloniex:
     50 - BTC_LTC
     69 - BTC_NXT
     ...
+
+    # Returns the currency pair id
+    >>>> poloniex.currency_pairs['USDC_BTC']
+    224
+
