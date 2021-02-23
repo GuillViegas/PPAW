@@ -29,7 +29,7 @@ obtained via:
 
 With the ``poloniex``instance you can then interact with Poloniex:
 
-.. code-bloc:: python
+.. code-block:: python
 
     # List currencies
     >>>> poloniex.currencies
