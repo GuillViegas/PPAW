@@ -59,3 +59,24 @@ With the ``poloniex`` instance you can then interact with Poloniex:
     >>>> poloniex.currency_pairs['USDC_BTC']
     224
 
+
+Usage Examples
+--------------
+
+Subscribe Method
+""""""""""""""""
+
+This is an asynchronous method that establishes a connection with the poloniex websocket. 
+You need to provide a currency pair key, like 'USDC_BTC', an aggregation function, in this
+case a closure that calculates a candle(opening, minimum, maximun and closing value) for a
+period of time, the corresponding period, and a callback function that will consume the values.
+
+.. code-block:: python
+
+    import asyncio
+    from db import store_candle
+    from ppaw import Poloniex
+    from ppaw.utils import calculate_candle
+
+    p = Poloniex()
+    asyncio.get_event_loop().run_until_complete(p.subscribe('USDC_BTC', calculate_candle, 60, store_candle))
