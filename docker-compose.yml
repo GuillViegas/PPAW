@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+    db:
+        image: mysql:8.0.23
+        environment:
+            MYSQL_DATABASE: candles_db
+            MYSQL_USER: candles_app
+            MYSQL_PASSWORD: Y2FuZGxlc19hcHA=
+            MYSQL_ROOT_PASSWORD: Y2FuZGxlc19hcHA=
+        healthcheck:
+            test: "exit 0"
+    app:
+        build: .
+        command: ["python", "app.py"]
+        links:
+            - db
+        depends_on:
+            db:
+                condition: service_healthy
+                

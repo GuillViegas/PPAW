@@ -1,0 +1,1 @@
+DB_URI = "mysql+mysqlconnector://candles_app:Y2FuZGxlc19hcHA=@db/candles_db"

@@ -52,18 +52,6 @@ class Currencies(dict):
 
 
 class PoloniexPublic:
-    """ Provides convenient access to Poloniex's APIs.
-
-    Instances of this class are the gateway to interacting with Poloniex's APIs
-    though PPAW. An instance of this class can be obtained via:
-
-    .. code-block:: python
-
-        from ppaw import Poloniex
-
-        poloniex = Poloniex()
-
-    """
 
     def __init__(self):
         self._public_url = POLONIEX_PUBLIC_URL
@@ -141,16 +129,17 @@ class PoloniexWebsocket:
     def __init__(self):
         self._websocket_url = POLONIEX_WEBSOCKET_URL
 
-    async def _subscribe(   self, 
+    async def subscribe(   self, 
                             channel: str, 
                             aggregation_function: Callable[[str], Candle], 
-                            period: int):
+                            period: int,
+                            store_func: Callable):
         async with websockets.connect(self._websocket_url) as websocket:
             msg = json.dumps({"command": "subscribe", "channel": channel})
 
             await websocket.send(msg)
 
-            func_args = {'currency_pair': channel, 'duration':(period/60)}
+            func_args = {'currency_pair': channel, 'frequency':(period/60)}
             agg_func = aggregation_function(**func_args)
             
             start = datetime.now()
@@ -161,12 +150,27 @@ class PoloniexWebsocket:
                 if (datetime.now() - start).total_seconds() >= period:
                     start = datetime.now()
                     candle = agg_func(None)
-                    print(candle.currency_pair, candle.duration, candle.open, candle.low, candle.high, candle.close)
+
+                    if store_func and candle.currency_pair:
+                        await store_func(candle)
+
                     del agg_func
                     agg_func = aggregation_function(**func_args)
 
 
 class Poloniex(PoloniexPublic, PoloniexWebsocket):
+    """ Provides convenient access to Poloniex's APIs.
+
+    Instances of this class are the gateway to interacting with Poloniex's APIs
+    though PPAW. An instance of this class can be obtained via:
+
+    .. code-block:: python
+
+        from ppaw import Poloniex
+
+        poloniex = Poloniex()
+
+    """
     
     def __init__(self):
         PoloniexPublic.__init__(self)
