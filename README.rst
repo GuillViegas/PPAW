@@ -7,3 +7,5 @@ PPAW, an acronym for "Python Poloniex API Wrapper", is a Python package that all
 
 Installation
 ------------
+
+This project is dockerized, so it can be run using the command ***docker-compose up***.
