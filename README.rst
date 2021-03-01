@@ -95,7 +95,7 @@ This can be changed by modifying the third paramenter of the subscribe method.
 To access the mysql containers and see the latest records, you can use the following command:
 
 .. code-block:: bash
-    docker exec -it <mysql_container_id> sh
+    $ docker exec -it <mysql_container_id> sh
 
 To acess the database:
 
@@ -105,5 +105,5 @@ To acess the database:
 Finally, to list the latest records:
 
 .. code-block:: sql
-    > SELECT * FROM candles_db.candleapp_candle;
+    mysql> SELECT * FROM candles_db.candleapp_candle;
 
