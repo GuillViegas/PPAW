@@ -4,7 +4,7 @@ ENV PYTHONUNBUFFERED=1
 
 RUN mkdir -p /candle_app/ppaw 
 
-COPY /app/requirements.txt /candle_app/
+COPY app/requirements.txt /candle_app/
 
 ADD app/src /candle_app/
 ADD ppaw /candle_app/ppaw/
